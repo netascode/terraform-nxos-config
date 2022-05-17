@@ -1,0 +1,41 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-nxos-config/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-nxos-config/actions/workflows/test.yml)
+
+  # Terraform NX-OS Configuration Module
+
+  This module can manage a Cisco Nexus 9000 configuration.
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  Example of `nxos_model.yaml` file
+
+  ```yaml
+  {{ include "./examples/complete/nxos_model.yaml" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false
