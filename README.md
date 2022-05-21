@@ -200,7 +200,7 @@ vlans:
 
 | Name | Version |
 |------|---------|
-| <a name="provider_nxos"></a> [nxos](#provider\_nxos) | >= 0.3.12 |
+| <a name="provider_nxos"></a> [nxos](#provider\_nxos) | 0.3.13 |
 
 ## Inputs
 
@@ -226,7 +226,7 @@ No outputs.
 | <a name="module_nxos_bgp"></a> [nxos\_bgp](#module\_nxos\_bgp) | netascode/bgp/nxos | >= 0.1.0 |
 | <a name="module_nxos_fabric_forwarding"></a> [nxos\_fabric\_forwarding](#module\_nxos\_fabric\_forwarding) | netascode/fabric-forwarding/nxos | >= 0.1.0 |
 | <a name="module_nxos_interface_nve"></a> [nxos\_interface\_nve](#module\_nxos\_interface\_nve) | netascode/interface-nve/nxos | >= 0.1.0 |
-| <a name="module_nxos_evpn"></a> [nxos\_evpn](#module\_nxos\_evpn) | ../terraform-nxos-evpn | n/a |
+| <a name="module_nxos_evpn"></a> [nxos\_evpn](#module\_nxos\_evpn) | netascode/evpn/nxos | >= 0.1.0 |
 
 ## Resources
 

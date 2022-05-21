@@ -19,6 +19,12 @@ content: |-
   {{ include "./main.tf" }}
   ```
 
+  Example of `nxos_model.yaml` file
+
+  ```yaml
+  {{ include "./nxos_model.yaml" }}
+  ```
+
 output:
   file: README.md
   mode: replace

@@ -43,15 +43,14 @@ resource "nxos_bridge_domain" "l2BD" {
 }
 
 module "nxos_vrf" {
-  source = "netascode/vrf/nxos"
-  # source = "../terraform-nxos-vrf"
+  source              = "netascode/vrf/nxos"
   version             = ">= 0.1.2"
-  for_each            = { for v in var.model.vrfs : v.name => v }
+  for_each            = contains(keys(var.model), "vrfs") ? { for v in var.model.vrfs : v.name => v } : {}
   name                = each.value.name
   description         = lookup(each.value, "description", "")
   vni                 = lookup(each.value, "vni", null)
   route_distinguisher = lookup(each.value, "route_distinguisher", null)
-  address_families    = lookup(each.value, "address_families", null)
+  address_families    = lookup(each.value, "address_families", [])
 
   depends_on = [
     module.nxos_features
@@ -130,7 +129,6 @@ module "nxos_interface_loopback" {
 }
 
 module "nxos_ospf" {
-  # source = "../terraform-nxos-ospf"
   source   = "netascode/ospf/nxos"
   version  = ">= 0.1.0"
   for_each = contains(keys(var.model), "ospf") ? { for v in var.model.ospf : v.name => v } : {}
@@ -177,6 +175,7 @@ module "nxos_fabric_forwarding" {
 module "nxos_interface_nve" {
   source                           = "netascode/interface-nve/nxos"
   version                          = ">= 0.1.0"
+  count                            = contains(keys(var.model), "interface_nve") ? 1 : 0
   admin_state                      = lookup(var.model.interface_nve, "admin_state", false)
   advertise_virtual_mac            = lookup(var.model.interface_nve, "advertise_virtual_mac", false)
   hold_down_time                   = lookup(var.model.interface_nve, "hold_down_time", 180)
@@ -196,11 +195,10 @@ module "nxos_interface_nve" {
 }
 
 module "nxos_evpn" {
-  # source                           = "netascode/interface-nve/nxos"
-  source = "../terraform-nxos-evpn"
-  # version                          = ">= 0.1.0"
-  count = contains(keys(var.model), "evpn") ? 1 : 0
-  vnis  = contains(keys(var.model), "evpn") ? lookup(var.model.evpn, "vnis", []) : []
+  source  = "netascode/evpn/nxos"
+  version = ">= 0.1.0"
+  count   = contains(keys(var.model), "evpn") ? 1 : 0
+  vnis    = contains(keys(var.model), "evpn") ? lookup(var.model.evpn, "vnis", []) : []
 
   depends_on = [
     nxos_bridge_domain.l2BD
