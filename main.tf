@@ -1,12 +1,15 @@
 resource "nxos_system" "topSystem" {
-  count = contains(keys(var.model), "hostname") ? 1 : 0
-  name  = var.model.hostname
+  count  = contains(keys(var.model), "hostname") ? 1 : 0
+  device = var.device
+  name   = var.model.hostname
 }
 
 module "nxos_features" {
-  source            = "netascode/features/nxos"
-  version           = ">= 0.1.0"
+  source  = "netascode/features/nxos"
+  version = ">= 0.1.0"
+
   count             = contains(keys(var.model), "features") ? 1 : 0
+  device            = var.device
   bfd               = contains(var.model.features, "bfd")
   bgp               = contains(var.model.features, "bgp")
   dhcp              = contains(var.model.features, "dhcp")
@@ -33,6 +36,7 @@ module "nxos_features" {
 
 resource "nxos_bridge_domain" "l2BD" {
   for_each     = contains(keys(var.model), "vlans") ? { for v in var.model.vlans : v.id => v } : {}
+  device       = var.device
   fabric_encap = "vlan-${each.value.id}"
   access_encap = contains(keys(each.value), "vn_segment") ? "vxlan-${each.value.vn_segment}" : "unknown"
   name         = lookup(each.value, "name", "")
@@ -43,9 +47,11 @@ resource "nxos_bridge_domain" "l2BD" {
 }
 
 module "nxos_vrf" {
-  source              = "netascode/vrf/nxos"
-  version             = ">= 0.1.2"
+  source  = "netascode/vrf/nxos"
+  version = ">= 0.1.2"
+
   for_each            = contains(keys(var.model), "vrfs") ? { for v in var.model.vrfs : v.name => v } : {}
+  device              = var.device
   name                = each.value.name
   description         = lookup(each.value, "description", "")
   vni                 = lookup(each.value, "vni", null)
@@ -58,9 +64,11 @@ module "nxos_vrf" {
 }
 
 module "nxos_interface_ethernet" {
-  source                   = "netascode/interface-ethernet/nxos"
-  version                  = ">= 0.1.0"
+  source  = "netascode/interface-ethernet/nxos"
+  version = ">= 0.1.0"
+
   for_each                 = contains(keys(var.model), "interfaces_ethernet") ? { for v in var.model.interfaces_ethernet : v.id => v } : {}
+  device                   = var.device
   id                       = each.value.id
   access_vlan              = lookup(each.value, "access_vlan", 1)
   admin_state              = lookup(each.value, "admin_state", true)
@@ -93,9 +101,11 @@ module "nxos_interface_ethernet" {
 }
 
 module "nxos_interface_vlan" {
-  source        = "netascode/interface-vlan/nxos"
-  version       = ">= 0.1.0"
+  source  = "netascode/interface-vlan/nxos"
+  version = ">= 0.1.0"
+
   for_each      = contains(keys(var.model), "interfaces_vlan") ? { for v in var.model.interfaces_vlan : v.id => v } : {}
+  device        = var.device
   id            = each.value.id
   admin_state   = lookup(each.value, "admin_state", true)
   delay         = lookup(each.value, "delay", 1)
@@ -114,9 +124,11 @@ module "nxos_interface_vlan" {
 }
 
 module "nxos_interface_loopback" {
-  source       = "netascode/interface-loopback/nxos"
-  version      = ">= 0.1.1"
+  source  = "netascode/interface-loopback/nxos"
+  version = ">= 0.1.1"
+
   for_each     = contains(keys(var.model), "interfaces_loopback") ? { for v in var.model.interfaces_loopback : v.id => v } : {}
+  device       = var.device
   id           = each.value.id
   admin_state  = lookup(each.value, "admin_state", true)
   description  = lookup(each.value, "description", "")
@@ -129,9 +141,11 @@ module "nxos_interface_loopback" {
 }
 
 module "nxos_ospf" {
-  source   = "netascode/ospf/nxos"
-  version  = ">= 0.1.0"
+  source  = "netascode/ospf/nxos"
+  version = ">= 0.1.0"
+
   for_each = contains(keys(var.model), "ospf") ? { for v in var.model.ospf : v.name => v } : {}
+  device   = var.device
   name     = each.value.name
   vrfs     = each.value.vrfs
 
@@ -143,9 +157,11 @@ module "nxos_ospf" {
 }
 
 module "nxos_bgp" {
-  source                  = "netascode/bgp/nxos"
-  version                 = ">= 0.1.0"
+  source  = "netascode/bgp/nxos"
+  version = ">= 0.1.0"
+
   count                   = contains(keys(var.model), "bgp") ? 1 : 0
+  device                  = var.device
   asn                     = var.model.bgp.asn
   enhanced_error_handling = lookup(var.model.bgp, "enhanced_error_handling", true)
   template_peers          = lookup(var.model.bgp, "template_peers", null)
@@ -160,9 +176,11 @@ module "nxos_bgp" {
 }
 
 module "nxos_fabric_forwarding" {
-  source              = "netascode/fabric-forwarding/nxos"
-  version             = ">= 0.1.0"
+  source  = "netascode/fabric-forwarding/nxos"
+  version = ">= 0.1.0"
+
   count               = contains(keys(var.model), "fabric_forwarding") ? 1 : 0
+  device              = var.device
   anycast_gateway_mac = var.model.fabric_forwarding.anycast_gateway_mac
   vlan_interfaces     = [for v in var.model.fabric_forwarding.anycast_gateway_vlans : { "id" = v }]
 
@@ -173,9 +191,11 @@ module "nxos_fabric_forwarding" {
 }
 
 module "nxos_interface_nve" {
-  source                           = "netascode/interface-nve/nxos"
-  version                          = ">= 0.1.0"
+  source  = "netascode/interface-nve/nxos"
+  version = ">= 0.1.0"
+
   count                            = contains(keys(var.model), "interface_nve") ? 1 : 0
+  device                           = var.device
   admin_state                      = lookup(var.model.interface_nve, "admin_state", false)
   advertise_virtual_mac            = lookup(var.model.interface_nve, "advertise_virtual_mac", false)
   hold_down_time                   = lookup(var.model.interface_nve, "hold_down_time", 180)
@@ -197,8 +217,10 @@ module "nxos_interface_nve" {
 module "nxos_evpn" {
   source  = "netascode/evpn/nxos"
   version = ">= 0.1.0"
-  count   = contains(keys(var.model), "evpn") ? 1 : 0
-  vnis    = contains(keys(var.model), "evpn") ? lookup(var.model.evpn, "vnis", []) : []
+
+  count  = contains(keys(var.model), "evpn") ? 1 : 0
+  device = var.device
+  vnis   = contains(keys(var.model), "evpn") ? lookup(var.model.evpn, "vnis", []) : []
 
   depends_on = [
     nxos_bridge_domain.l2BD
