@@ -50,7 +50,8 @@ module "nxos_vrf" {
   source  = "netascode/vrf/nxos"
   version = ">= 0.1.2"
 
-  for_each            = contains(keys(var.model), "vrfs") ? { for v in var.model.vrfs : v.name => v } : {}
+  # for_each            = contains(keys(var.model), "vrfs") ? { for v in var.model.vrfs : v.name => v } : {}
+  for_each            = try({ for v in var.model.vrfs : v.name => v }, {})
   device              = var.device
   name                = each.value.name
   description         = lookup(each.value, "description", "")
@@ -158,7 +159,7 @@ module "nxos_ospf" {
 
 module "nxos_bgp" {
   source  = "netascode/bgp/nxos"
-  version = ">= 0.1.0"
+  version = ">= 0.1.1"
 
   count                   = contains(keys(var.model), "bgp") ? 1 : 0
   device                  = var.device

@@ -194,7 +194,7 @@ vlans:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_nxos"></a> [nxos](#requirement\_nxos) | >= 0.3.12 |
+| <a name="requirement_nxos"></a> [nxos](#requirement\_nxos) | >= 0.3.15 |
 
 ## Providers
 
@@ -223,7 +223,7 @@ No outputs.
 | <a name="module_nxos_interface_vlan"></a> [nxos\_interface\_vlan](#module\_nxos\_interface\_vlan) | netascode/interface-vlan/nxos | >= 0.1.0 |
 | <a name="module_nxos_interface_loopback"></a> [nxos\_interface\_loopback](#module\_nxos\_interface\_loopback) | netascode/interface-loopback/nxos | >= 0.1.1 |
 | <a name="module_nxos_ospf"></a> [nxos\_ospf](#module\_nxos\_ospf) | netascode/ospf/nxos | >= 0.1.0 |
-| <a name="module_nxos_bgp"></a> [nxos\_bgp](#module\_nxos\_bgp) | netascode/bgp/nxos | >= 0.1.0 |
+| <a name="module_nxos_bgp"></a> [nxos\_bgp](#module\_nxos\_bgp) | netascode/bgp/nxos | >= 0.1.1 |
 | <a name="module_nxos_fabric_forwarding"></a> [nxos\_fabric\_forwarding](#module\_nxos\_fabric\_forwarding) | netascode/fabric-forwarding/nxos | >= 0.1.0 |
 | <a name="module_nxos_interface_nve"></a> [nxos\_interface\_nve](#module\_nxos\_interface\_nve) | netascode/interface-nve/nxos | >= 0.1.0 |
 | <a name="module_nxos_evpn"></a> [nxos\_evpn](#module\_nxos\_evpn) | netascode/evpn/nxos | >= 0.1.0 |
