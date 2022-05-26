@@ -200,7 +200,7 @@ vlans:
 
 | Name | Version |
 |------|---------|
-| <a name="provider_nxos"></a> [nxos](#provider\_nxos) | 0.3.13 |
+| <a name="provider_nxos"></a> [nxos](#provider\_nxos) | >= 0.3.15 |
 
 ## Inputs
 
