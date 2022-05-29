@@ -35,7 +35,7 @@ module "nxos_features" {
 }
 
 resource "nxos_bridge_domain" "l2BD" {
-  for_each     = contains(keys(var.model), "vlans") ? { for v in var.model.vlans : v.id => v } : {}
+  for_each     = { for v in lookup(var.model, "vlans", []) : v.id => v }
   device       = var.device
   fabric_encap = "vlan-${each.value.id}"
   access_encap = contains(keys(each.value), "vn_segment") ? "vxlan-${each.value.vn_segment}" : "unknown"
@@ -50,8 +50,7 @@ module "nxos_vrf" {
   source  = "netascode/vrf/nxos"
   version = ">= 0.1.2"
 
-  # for_each            = contains(keys(var.model), "vrfs") ? { for v in var.model.vrfs : v.name => v } : {}
-  for_each            = try({ for v in var.model.vrfs : v.name => v }, {})
+  for_each            = { for v in lookup(var.model, "vrfs", []) : v.name => v }
   device              = var.device
   name                = each.value.name
   description         = lookup(each.value, "description", "")
@@ -68,7 +67,7 @@ module "nxos_interface_ethernet" {
   source  = "netascode/interface-ethernet/nxos"
   version = ">= 0.1.0"
 
-  for_each                 = contains(keys(var.model), "interfaces_ethernet") ? { for v in var.model.interfaces_ethernet : v.id => v } : {}
+  for_each                 = { for v in lookup(var.model, "interfaces_ethernet", []) : v.id => v }
   device                   = var.device
   id                       = each.value.id
   access_vlan              = lookup(each.value, "access_vlan", 1)
@@ -105,7 +104,7 @@ module "nxos_interface_vlan" {
   source  = "netascode/interface-vlan/nxos"
   version = ">= 0.1.0"
 
-  for_each      = contains(keys(var.model), "interfaces_vlan") ? { for v in var.model.interfaces_vlan : v.id => v } : {}
+  for_each      = { for v in lookup(var.model, "interfaces_vlan", []) : v.id => v }
   device        = var.device
   id            = each.value.id
   admin_state   = lookup(each.value, "admin_state", true)
@@ -128,7 +127,7 @@ module "nxos_interface_loopback" {
   source  = "netascode/interface-loopback/nxos"
   version = ">= 0.1.1"
 
-  for_each     = contains(keys(var.model), "interfaces_loopback") ? { for v in var.model.interfaces_loopback : v.id => v } : {}
+  for_each     = { for v in lookup(var.model, "interfaces_loopback", []) : v.id => v }
   device       = var.device
   id           = each.value.id
   admin_state  = lookup(each.value, "admin_state", true)
@@ -145,7 +144,7 @@ module "nxos_ospf" {
   source  = "netascode/ospf/nxos"
   version = ">= 0.1.0"
 
-  for_each = contains(keys(var.model), "ospf") ? { for v in var.model.ospf : v.name => v } : {}
+  for_each = { for v in lookup(var.model, "ospf", []) : v.name => v }
   device   = var.device
   name     = each.value.name
   vrfs     = each.value.vrfs
@@ -208,7 +207,7 @@ module "nxos_interface_nve" {
   source_interface                 = lookup(var.model.interface_nve, "source_interface", "unspecified")
   suppress_arp                     = lookup(var.model.interface_nve, "suppress_arp", false)
   suppress_mac_route               = lookup(var.model.interface_nve, "suppress_mac_route", false)
-  vnis                             = lookup(var.model.interface_nve, "vnis", [])
+  vnis                             = lookup(var.model.interface_nve, "vnis", null)
 
   depends_on = [
     nxos_bridge_domain.l2BD
@@ -221,7 +220,7 @@ module "nxos_evpn" {
 
   count  = contains(keys(var.model), "evpn") ? 1 : 0
   device = var.device
-  vnis   = contains(keys(var.model), "evpn") ? lookup(var.model.evpn, "vnis", []) : []
+  vnis   = lookup(var.model.evpn, "vnis", null)
 
   depends_on = [
     nxos_bridge_domain.l2BD

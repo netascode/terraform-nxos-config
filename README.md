@@ -16,7 +16,7 @@ locals {
 
 module "nxos_config" {
   source  = "netascode/config/nxos"
-  version = ">= 0.0.1"
+  version = ">= 0.1.0"
 
   model = local.model
 }
@@ -25,7 +25,7 @@ module "nxos_config" {
 Example of `nxos_model.yaml` file
 
 ```yaml
-hostname: "site-1-leaf-1"
+hostname: 'site-1-leaf-1'
 features:
   - ospf
   - bgp
@@ -69,9 +69,9 @@ bgp:
       description: Spine Peers template
       source_interface: lo0
       address_families:
-      - address_family: "l2vpn_evpn"
-        send_community_standard: true
-        send_community_extended: true
+        - address_family: 'l2vpn_evpn'
+          send_community_standard: true
+          send_community_extended: true
   vrfs:
     - vrf: default
       router_id: 172.16.1.1
@@ -93,45 +93,46 @@ bgp:
           description: External peer
           asn: 65010
           address_families:
-          - address_family: "ipv4_unicast"
-            send_community_standard: true
-            send_community_extended: true
+            - address_family: 'ipv4_unicast'
+              send_community_standard: true
+              send_community_extended: true
 vrfs:
+  - name: default
   - name: TENANT-1
     vni: 3901
     route_distinguisher: auto
     address_families:
-      - address_family: "ipv4_unicast"
+      - address_family: 'ipv4_unicast'
         route_target_both_auto: true
         route_target_both_auto_evpn: true
 interfaces_ethernet:
-  - id: "1/49"
-    description: "uplink 1"
+  - id: '1/49'
+    description: 'uplink 1'
     layer3: true
     link_debounce_down: 0
     mtu: 9000
-    ipv4_address: "192.168.1.0/31"
-    urpf: "loose"
-  - id: "1/50"
-    description: "uplink 2"
+    ipv4_address: '192.168.1.0/31'
+    urpf: 'loose'
+  - id: '1/50'
+    description: 'uplink 2'
     layer3: true
     link_debounce_down: 0
     mtu: 9000
-    ipv4_address: "192.168.1.2/31"
-  - id: "1/51"
-    description: "uplink 3"
+    ipv4_address: '192.168.1.2/31'
+  - id: '1/51'
+    description: 'uplink 3'
     layer3: true
     link_debounce_down: 0
     mtu: 9000
-    ipv4_address: "192.168.1.4/31"
-  - id: "1/52"
-    description: "uplink 4"
+    ipv4_address: '192.168.1.4/31'
+  - id: '1/52'
+    description: 'uplink 4'
     layer3: true
     link_debounce_down: 0
     mtu: 9000
-    ipv4_address: "192.168.1.6/31"
-  - id: "1/48"
-    description: "link to load balancer"
+    ipv4_address: '192.168.1.6/31'
+  - id: '1/48'
+    description: 'link to load balancer'
     layer3: true
     link_debounce_down: 0
     mtu: 9000
@@ -149,29 +150,29 @@ interfaces_vlan:
     admin_state: false
     description: OSPF backup link via peer-link
     mtu: 9216
-    ipv4_address: "192.168.1.8/31"
+    ipv4_address: '192.168.1.8/31'
   - id: 3901
     description: L3VNI for vrf TENANT-1
     vrf: TENANT-1
     mtu: 9216
     ip_forward: true
   - id: 101
-    description: "Site-local VLAN"
+    description: 'Site-local VLAN'
     vrf: TENANT-1
     mtu: 9216
-    ipv4_address: "10.1.0.1/24"
+    ipv4_address: '10.1.0.1/24'
   - id: 102
-    description: "Stretched VLAN"
+    description: 'Stretched VLAN'
     vrf: TENANT-1
     mtu: 9216
-    ipv4_address: "10.12.0.1/24"
+    ipv4_address: '10.12.0.1/24'
 interface_nve:
   admin_state: true
   hold_down_time: 300
   host_reachability_protocol: bgp
   ingress_replication_protocol_bgp: true
-  source_interface: "lo0"
-  vnis: 
+  source_interface: 'lo0'
+  vnis:
     - vni: 101
     - vni: 102
     - vni: 3901

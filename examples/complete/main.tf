@@ -6,7 +6,7 @@ locals {
 
 module "nxos_config" {
   source  = "netascode/config/nxos"
-  version = ">= 0.0.1"
+  version = ">= 0.1.0"
 
   model = local.model
 }
