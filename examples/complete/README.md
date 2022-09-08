@@ -38,7 +38,7 @@ features:
   - evpn
   - nv_overlay
 fabric_forwarding:
-  anycast_gateway_mac: 20:20:00:00:10:12
+  anycast_gateway_mac: '20:20:00:00:10:12'
   anycast_gateway_vlans:
     - 101
     - 102
