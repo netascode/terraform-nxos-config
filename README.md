@@ -3,7 +3,7 @@
 
 # Terraform NX-OS Configuration Module
 
-This module can manage a Cisco Nexus 9000 configuration.
+This module can manage a Cisco Nexus 9000 configuration. [terraform-nxos-config-validation](https://github.com/netascode/terraform-nxos-config-validation) repository can be used for syntactic and semantic validation of YAML model for this module.
 
 ## Examples
 
