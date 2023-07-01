@@ -195,13 +195,13 @@ vlans:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_nxos"></a> [nxos](#requirement\_nxos) | >= 0.3.15 |
+| <a name="requirement_nxos"></a> [nxos](#requirement\_nxos) | >= 0.5.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_nxos"></a> [nxos](#provider\_nxos) | >= 0.3.15 |
+| <a name="provider_nxos"></a> [nxos](#provider\_nxos) | >= 0.5.0 |
 
 ## Inputs
 
@@ -233,6 +233,6 @@ No outputs.
 
 | Name | Type |
 |------|------|
-| [nxos_bridge_domain.l2BD](https://registry.terraform.io/providers/netascode/nxos/latest/docs/resources/bridge_domain) | resource |
-| [nxos_system.topSystem](https://registry.terraform.io/providers/netascode/nxos/latest/docs/resources/system) | resource |
+| [nxos_bridge_domain.l2BD](https://registry.terraform.io/providers/CiscoDevNet/nxos/latest/docs/resources/bridge_domain) | resource |
+| [nxos_system.topSystem](https://registry.terraform.io/providers/CiscoDevNet/nxos/latest/docs/resources/system) | resource |
 <!-- END_TF_DOCS -->
